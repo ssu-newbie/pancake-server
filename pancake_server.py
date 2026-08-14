@@ -44,6 +44,41 @@ def _save(rows: list) -> None:
     os.replace(tmp, DATA_FILE)
 
 
+SCORE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scores.json")
+
+class ScoreIn(BaseModel):
+    score: int
+
+def _load_scores():
+    if not os.path.exists(SCORE_FILE):
+        return []
+    try:
+        with open(SCORE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return []
+
+def _save_scores(rows):
+    tmp = SCORE_FILE + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(rows, f, ensure_ascii=False)
+    os.replace(tmp, SCORE_FILE)
+
+@app.post("/score")
+def post_score(s: ScoreIn):
+    """게임 종료 점수 기록 -> 역대 최고 점수 반환"""
+    with _lock:
+        rows = _load_scores()
+        rows.append({"ts": time.time(), "score": int(s.score)})
+        _save_scores(rows)
+    best = max(r["score"] for r in rows)
+    return {"ok": True, "best": best, "count": len(rows)}
+
+@app.get("/best")
+def get_best():
+    rows = _load_scores()
+    return {"best": max([r["score"] for r in rows], default=0), "count": len(rows)}
+
 @app.get("/health")
 def health():
     return {"ok": True, "responses": len(_load())}
