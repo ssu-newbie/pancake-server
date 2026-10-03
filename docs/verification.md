@@ -41,7 +41,9 @@ python scripts/verify_compatibility.py
 
 ## GitHub 자동 검증
 
-`.github/workflows/tests.yml`은 `main` 대상 PR과 `main` push에서 Python 3.12.14, Linux·Windows 두 환경으로 위 명령을 실행한다. 패키지는 기존 검증 버전으로 고정하고, Actions도 확인한 릴리스의 커밋 SHA로 고정했다. [실행 결과](https://github.com/ssu-newbie/pancake-server/actions/workflows/tests.yml)는 로컬 검증 기록과 별도로 확인한다.
+`.github/workflows/tests.yml`은 `main` 대상 PR과 `main` push에서 Linux(Python 3.12.14)·Windows(Python 3.12.10) 두 환경으로 위 명령을 실행한다. 최초 원격 실행에서 Windows용 3.12.14 설치본이 제공되지 않아 Python 설정 단계가 실패했다. 공식 `actions/python-versions` 목록에서 제공되는 Windows 3.12.10을 확인해 해당 환경만 수정했다.
+
+원본과 변경본은 각 작업 안에서 같은 Python·패키지 환경으로 비교한다. 패키지는 기존 검증 버전으로 고정하고, Actions도 확인한 릴리스의 커밋 SHA로 고정했다. [실행 결과](https://github.com/ssu-newbie/pancake-server/actions/workflows/tests.yml)는 로컬 검증 기록과 별도로 확인한다.
 
 ## 남은 검증
 
