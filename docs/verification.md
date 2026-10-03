@@ -29,14 +29,19 @@ python -m pip install -r requirements-dev.txt
 python -m pytest -q
 ```
 
-원본과 비교하려면 macOS/Linux에서 다음과 같이 별도 임시 파일을 사용한다. 원본 파일은 덮어쓰지 않는다.
+원본과 비교하려면 Git 이력이 있는 저장소에서 다음 명령을 실행한다. Windows와 macOS/Linux에서 같은 명령을 사용한다.
 
 ```bash
-legacy_source=$(mktemp /tmp/pancake-legacy-XXXXXX.py)
-git show 9e074ae5e22e89c4aa1a51bdb5a0f64e654d64d0:pancake_server.py > "$legacy_source"
-PANCAKE_LEGACY_SOURCE="$legacy_source" python -m pytest -q tests/test_api_contract.py
-rm "$legacy_source"
+python scripts/verify_compatibility.py
 ```
+
+스크립트는 `git show`로 기준 소스를 임시 폴더에 읽고 Git blob 해시를 확인한다. 이어서 원본 테스트, 현재 테스트, OpenAPI 비교를 수행한다. 하나라도 실패하면 종료 코드 1을 반환한다. 기준 커밋이 없는 얕은 clone에서는 전체 이력을 확보한 뒤 실행해야 한다. 다운로드 ZIP에는 Git 이력이 없으므로 현재 테스트만 실행할 수 있다.
+
+실제 설문·점수 파일이나 Git 작업 트리를 수정하지 않는다. 외부에 서버를 띄우거나 운영 API를 호출하지 않는다.
+
+## GitHub 자동 검증
+
+`.github/workflows/tests.yml`은 `main` 대상 PR과 `main` push에서 Python 3.12.14, Linux·Windows 두 환경으로 위 명령을 실행한다. 패키지는 기존 검증 버전으로 고정하고, Actions도 확인한 릴리스의 커밋 SHA로 고정했다. [실행 결과](https://github.com/ssu-newbie/pancake-server/actions/workflows/tests.yml)는 로컬 검증 기록과 별도로 확인한다.
 
 ## 남은 검증
 

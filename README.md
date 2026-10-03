@@ -159,6 +159,14 @@ python -m pip install -r requirements-dev.txt
 python -m pytest -q
 ```
 
+원본 서버와의 호환성까지 한 번에 확인하려면 Git 이력이 있는 저장소에서 실행합니다.
+
+```bash
+python scripts/verify_compatibility.py
+```
+
+이 명령은 원본 26개 테스트, 변경본 27개 테스트, OpenAPI 비교를 순서대로 수행합니다. GitHub Actions에도 같은 명령을 연결해 PR과 `main` 변경 시 Linux·Windows 환경에서 검증하도록 구성했습니다. 원격 실행 결과는 [Actions](https://github.com/ssu-newbie/pancake-server/actions/workflows/tests.yml)에서 확인할 수 있습니다.
+
 위 명령은 가상환경을 활성화한 상태에서 실행합니다. 개발 의존성은 `requirements-test.lock`으로 이번 검증 환경에 맞춥니다. 운영 의존성 파일은 기존 상태를 유지했습니다.
 
 - 변경 전 서버: API 회귀 테스트 **26개 통과**
