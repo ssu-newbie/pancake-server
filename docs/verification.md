@@ -12,7 +12,7 @@
 | 검증 | 결과 |
 | --- | --- |
 | 원본에 API 계약 테스트 실행 | 26 passed |
-| 리팩토링에 같은 테스트 및 데이터 격리 테스트 실행 | 27 passed |
+| 리팩토링에 같은 테스트·데이터 격리·Unity 요청 계약 테스트 실행 | 29 passed |
 | 변경 전·후 `app.openapi()` 비교 | 동일 |
 | `pancake_server:app` import | 성공 |
 
@@ -39,6 +39,8 @@ python scripts/verify_compatibility.py
 
 실제 설문·점수 파일이나 Git 작업 트리를 수정하지 않는다. 외부에 서버를 띄우거나 운영 API를 호출하지 않는다.
 
+업로드된 Unity 소스에서 확인한 112개 주장 ID와 엔딩 문항 우선 제출 순서를 바탕으로 서버 계약 테스트 2개를 추가했다. 원본 설문행은 테스트나 공개 저장소에 넣지 않았다.
+
 ## GitHub 자동 검증
 
 `.github/workflows/tests.yml`은 `main` 대상 PR과 `main` push에서 Linux(Python 3.12.14)·Windows(Python 3.12.10) 두 환경으로 위 명령을 실행한다. 최초 원격 실행에서 Windows용 3.12.14 설치본이 제공되지 않아 Python 설정 단계가 실패했다. 공식 `actions/python-versions` 목록에서 제공되는 Windows 3.12.10을 확인해 해당 환경만 수정했다.
@@ -47,4 +49,4 @@ python scripts/verify_compatibility.py
 
 ## 남은 검증
 
-Unity 클라이언트 실행, 실제 설문 자료, Render 데이터 보존 설정, 운영 서버 의존성, 배포 후 연결은 아직 확인하지 않았다. 인수인계에 언급된 과거 동시 접속·시뮬레이션 수치를 이 테스트 결과로 대체하거나 검증했다고 주장하지 않는다.
+Unity 클라이언트 실행, Render 데이터 보존 설정, 운영 서버 의존성, 배포 후 연결은 아직 확인하지 않았다. 인수인계에 언급된 과거 동시 접속·시뮬레이션 수치를 이 테스트 결과로 대체하거나 검증했다고 주장하지 않는다.

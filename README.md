@@ -64,7 +64,7 @@ python3 -m venv .venv
 | `POST` | `/score` | 점수 한 건 저장 |
 | `GET` | `/best` | 최고 점수와 점수 기록 수 |
 
-인수인계 문서에 따르면 Unity 클라이언트는 `claims`에 `q1`부터 `q112`까지의 주장 ID를 전달합니다. 서버 자체는 임의의 문자열을 허용하며, 문항의 의미와 순서는 클라이언트가 관리합니다. 최신 Unity 소스와의 대조는 별도로 필요합니다.
+업로드된 Unity 소스에서 확인한 클라이언트는 `claims`에 `q1`부터 `q112`까지의 주장 ID를 전달합니다. 서버 자체는 임의의 문자열을 허용하며, 문항의 의미와 순서는 클라이언트가 관리합니다. 소스 대조 결과와 검증 범위는 [클라이언트 연동 문서](docs/client-integration.md)에 기록했습니다.
 
 ### 설문 제출
 
@@ -165,12 +165,12 @@ python -m pytest -q
 python scripts/verify_compatibility.py
 ```
 
-이 명령은 원본 26개 테스트, 변경본 27개 테스트, OpenAPI 비교를 순서대로 수행합니다. GitHub Actions에도 같은 명령을 연결해 PR과 `main` 변경 시 Linux·Windows 환경에서 검증하도록 구성했습니다. 원격 실행 결과는 [Actions](https://github.com/ssu-newbie/pancake-server/actions/workflows/tests.yml)에서 확인할 수 있습니다.
+이 명령은 원본 26개 테스트, 변경본 29개 테스트, OpenAPI 비교를 순서대로 수행합니다. GitHub Actions에도 같은 명령을 연결해 PR과 `main` 변경 시 Linux·Windows 환경에서 검증하도록 구성했습니다. 원격 실행 결과는 [Actions](https://github.com/ssu-newbie/pancake-server/actions/workflows/tests.yml)에서 확인할 수 있습니다.
 
 위 명령은 가상환경을 활성화한 상태에서 실행합니다. 개발 의존성은 `requirements-test.lock`으로 이번 검증 환경에 맞춥니다. 운영 의존성 파일은 기존 상태를 유지했습니다.
 
 - 변경 전 서버: API 회귀 테스트 **26개 통과**
-- 변경 후 서버: 같은 API 테스트 26개 + 앱별 데이터 격리 1개, **27개 통과**
+- 변경 후 서버: 같은 API 테스트 26개 + 앱별 데이터 격리 1개 + Unity 요청 계약 2개, **29개 통과**
 - 동일한 의존성 환경에서 변경 전·후 **OpenAPI 명세 일치** 확인
 
 이 결과는 로컬 임시 데이터로 검증했습니다. Unity 실행, 운영 배포, 외부 동시 접속 성능을 검증한 결과는 아닙니다.
