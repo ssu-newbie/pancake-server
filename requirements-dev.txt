@@ -1,0 +1,4 @@
+-c requirements-test.lock
+-r requirements.txt
+httpx
+pytest
